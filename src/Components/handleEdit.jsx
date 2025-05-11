@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db, collection, getDocs, deleteDoc, doc, updateDoc } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
-import emailjs from 'emailjs-com'; // EmailJS importálása
 
 const DisplayStreams = () => {
   const [streams, setStreams] = useState([]);
@@ -85,27 +84,7 @@ const DisplayStreams = () => {
   };
 
   const handleNotify = (stream) => {
-    if (user) {
-      // EmailJS integrálás
-      const templateParams = {
-        to_email: user.email, // A bejelentkezett felhasználó email címe
-        stream_time: stream.time,
-        stream_day: formatDay(new Date(stream.streamDate.seconds * 1000)),
-      };
-
-      emailjs.send(
-        'service_id', // A szolgáltatás ID-ja
-        'template_id', // Az email sablon ID-ja
-        templateParams,
-        'user_id' // Az EmailJS felhasználói ID-ja
-      )
-      .then((response) => {
-        alert(`Értesítést küldtünk a ${stream.time} streamről!`);
-      }, (err) => {
-        alert('Hiba történt az értesítés küldése közben.');
-        console.error('EmailJS hiba:', err);
-      });
-    }
+    alert(`Értesítést kérsz erre: ${stream.time} (${formatDay(new Date(stream.streamDate.seconds * 1000))})`);
   };
 
   return (
@@ -191,14 +170,13 @@ const DisplayStreams = () => {
             />
             <div className="flex justify-end gap-3">
               <button onClick={() => setEditingStream(null)} className="bg-gray-600 px-4 py-2 rounded hover:bg-gray-500">Mégse</button>
-              <button onClick={saveEdit} className="bg-purple-600 px-4 py-2 rounded hover:bg-purple-
-700">Mentés</button>
-</div>
-</div>
-</div>
-)}
-</div>
-);
+              <button onClick={saveEdit} className="bg-purple-600 px-4 py-2 rounded hover:bg-purple-700">Mentés</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default DisplayStreams;

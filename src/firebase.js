@@ -1,7 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth"; // EZ HIÁNYZOTT
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,    // <- EZ KELL A SZERKESZTÉSHEZ
+  setDoc        // <- Ha teljes dokumentumot cserélnél
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC89J1ECni0ES2CGSChQ0kZ7bNRDPG2gDM",
@@ -13,8 +21,19 @@ const firebaseConfig = {
   measurementId: "G-ESB0XGJ989"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+
 export const firestore = getFirestore(app);
-export const auth = getAuth(app); // EZ KELL A BEJELENTKEZÉSHEZ ÉS REGISZTRÁCIÓHOZ
+export const db = firestore;
+export const auth = getAuth(app);
+
+// Exportáljuk az összes használt metódust
+export {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,   // <- MOST MÁR ELÉRHETŐ LESZ
+  setDoc
+};

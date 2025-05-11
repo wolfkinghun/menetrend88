@@ -24,12 +24,12 @@ function App() {
 
   return (
     <RouterProvider router={router}>
-      {/* Render content only if user is logged in */}
+      {/* Render content only if user is logged in
       {!user ? (
         <div>Bejelentkezés szükséges!</div>
       ) : (
         <div>Welcome {user.email}</div>
-      )}
+      )} */}
     </RouterProvider>
   );
 }
