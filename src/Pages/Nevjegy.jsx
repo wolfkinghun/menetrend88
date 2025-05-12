@@ -37,11 +37,11 @@ const Nevjegy = () => {
 
         {/* Linkek */}
         <div className="flex flex-wrap justify-center gap-6 mb-12 text-base font-medium">
-          <a href="https://www.instagram.com/eszti88" className="hover:text-violet-100">Instagram</a>
-          <a href="https://www.facebook.com/eszti88" className="hover:text-violet-100">Facebook</a>
-          <a href="https://www.youtube.com/channel/eszti88-autosport" className="hover:text-violet-100">YouTube Autosport</a>
+          <a href="https://www.instagram.com/velezdi.eszter" className="hover:text-violet-100">Instagram</a>
+          {/* <a href="https://www.facebook.com/eszti88" className="hover:text-violet-100">Facebook</a> */}
+          {/* <a href="https://www.youtube.com/channel/eszti88-autosport" className="hover:text-violet-100">YouTube Autosport</a>
           <a href="https://www.youtube.com/channel/eszti88-gaming" className="hover:text-violet-100">YouTube Gaming</a>
-          <a href="https://www.tiktok.com/@eszti88" className="hover:text-violet-100">TikTok</a>
+          <a href="https://www.tiktok.com/@eszti88" className="hover:text-violet-100">TikTok</a> */}
         </div>
 
         {/* Szekciók */}
@@ -53,7 +53,7 @@ const Nevjegy = () => {
                 <p className="mt-2">Segíts pontokat szerezni, hogy elérhessem a(z) 1. Plusz-szintet</p>
                 <div className="mt-4">
                   <progress className="w-full h-2 bg-violet-700 rounded-full" value="8" max="100" />
-                  <p className="text-sm mt-2">8/100</p>
+                  <p className="text-sm mt-2">10/100</p>
                 </div>
               </>
             )

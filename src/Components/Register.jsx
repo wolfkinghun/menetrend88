@@ -2,31 +2,36 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';  // Firebase importálása
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Regisztrációs függvény
-
+import { setDoc, doc } from "firebase/firestore"; // ADD THIS
+import { db } from "../firebase"; // Your firestore instance
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Firebase regisztráció
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Ha sikerült a regisztráció
-        const user = userCredential.user;
-        console.log('Regisztrált felhasználó:', user);
-        alert('Sikeres regisztráció!');
-        navigate('/login');  // Átirányítás a bejelentkezéshez
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error('Hiba regisztráció közben:', errorCode, errorMessage);
-        alert(`Hiba: ${errorMessage}`);
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      const user = userCredential.user;
+      console.log('Regisztrált felhasználó:', user);
+
+      // ➕ Add user to Firestore 'users' collection
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        createdAt: new Date(),
+        role: "user" // vagy akár 'admin' ha szeretnél jogköröket
       });
-  };
+
+      alert('Sikeres regisztráció!');
+      navigate('/login');
+    })
+    .catch((error) => {
+      console.error('Hiba regisztráció közben:', error.code, error.message);
+      alert(`Hiba: ${error.message}`);
+    });
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-indigo-900 to-purple-800 text-white flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
