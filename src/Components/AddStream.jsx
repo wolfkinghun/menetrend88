@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { db, collection, addDoc } from "../firebase";  // db importálása
+import { db, collection, addDoc } from "../firebase";
+import { useNavigate } from 'react-router-dom';
+
 
 function AddStream() {
-  const [userId, setUserId] = useState('');
   const [streamTime, setStreamTime] = useState('');
   const [streamDescription, setStreamDescription] = useState('');
-  const [streamDate, setStreamDate] = useState(''); // Új állapot a dátumhoz
+  const [streamDate, setStreamDate] = useState('');
+ const navigate = useNavigate()
 
   const handleAddStream = async () => {
     if (!streamTime || !streamDate) {
@@ -14,26 +16,18 @@ function AddStream() {
     }
 
     try {
-      // Stream dátum konvertálása
       const streamDateObj = new Date(streamDate);
 
-      // Formázzuk a dátumot, hogy csak a hét napját jelenítse meg (pl: Hétfő, Kedd, ...)
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const formattedDate = streamDateObj.toLocaleDateString('hu-HU', options);
-
       const newStream = {
-        time: streamTime,      // Stream időpontja
-        description: streamDescription || 'Nincs leírás', // Leírás (opcionális)
-        streamDate: formattedDate,  // A stream dátuma (formázva)
-        createdAt: new Date(), // A stream hozzáadásának időpontja
+        time: streamTime,
+        description: streamDescription || 'Nincs leírás',
+        streamDate: streamDateObj,
+        createdAt: new Date(),
       };
 
-      // A streamek hozzáadása a Firestore 'streams' kollekciójához
       await addDoc(collection(db, 'streams'), newStream);
 
       alert('Stream hozzáadva!');
-      // A mezők kiürítése
-      setUserId('');
       setStreamTime('');
       setStreamDescription('');
       setStreamDate('');
@@ -43,36 +37,58 @@ function AddStream() {
   };
 
   return (
-    <div>
-      <h2>Stream hozzáadása</h2>
-      <div>
-        <label htmlFor="streamTime">Stream időpont (pl: hétfő 10:30): </label>
+    <div className='w-screen h-screen flex justify-center items-center bg-gradient-to-r from-purple-600 via-purple-800 to-black'>
+    <div className="w-full max-w-md mx-auto max-w-[500px] max-h-[500px] pb-[50px] mb-[125px] p-6 bg-gray-900 border border-purple-700 rounded-lg text-white">
+      <div className="flex justify-between items-center mb-6">
+        <button
+          onClick={() => navigate(-1)} // Vissza gomb funkció
+          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
+        >
+          🔙 Vissza
+        </button>
+        <h2 className="text-xl font-bold text-purple-400 text-center">➕ Stream hozzáadása</h2>
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="streamTime" className="block mb-1">Stream időpont (pl: 19:00):</label>
         <input
           type="text"
           id="streamTime"
           value={streamTime}
           onChange={(e) => setStreamTime(e.target.value)}
+          className="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white"
         />
       </div>
-      <div>
-        <label htmlFor="streamDescription">Stream leírás (opcionális): </label>
+
+      <div className="mb-4">
+        <label htmlFor="streamDescription" className="block mb-1">Leírás (opcionális):</label>
         <input
           type="text"
           id="streamDescription"
           value={streamDescription}
           onChange={(e) => setStreamDescription(e.target.value)}
+          className="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white"
         />
       </div>
-      <div>
-        <label htmlFor="streamDate">Stream dátuma: </label>
+
+      <div className="mb-6">
+        <label htmlFor="streamDate" className="block mb-1">Dátum:</label>
         <input
           type="date"
           id="streamDate"
           value={streamDate}
           onChange={(e) => setStreamDate(e.target.value)}
+          className="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white"
         />
       </div>
-      <button onClick={handleAddStream}>Stream hozzáadása</button>
+
+      <button
+        onClick={handleAddStream}
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+      >
+        ✅ Stream hozzáadása
+      </button>
+    </div>
     </div>
   );
 }

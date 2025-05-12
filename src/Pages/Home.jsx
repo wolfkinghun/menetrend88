@@ -43,7 +43,7 @@ export const Home = () => {
           <>
             {isAdmin && (
               <button
-                onClick={() => navigate('/admin')}
+                // onClick={() => navigate('/admin')}
                 className="bg-amber-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-amber-700 transition"
               >
                 Admin

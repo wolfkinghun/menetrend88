@@ -22,14 +22,15 @@ const AdminPage = () => {
 
   return (
     <div>
-      <h1>Welcome to the Admin Page</h1>
+      {/* <h1>Welcome to the Admin Page</h1>
+      <h4>Lesz még itt update</h4> */}
       {/* Admin tartalom */}
-      <Logout />
-      <AddStream/>
+      {/* <Logout />
+      <AddStream/> */}
        <button
         onClick={() => navigate("/")}  // Vissza az előző oldalra
         className="absolute top-6 left-6 bg-rose-700 text-white py-2 px-4 rounded-lg shadow-md hover:bg-purple-700 transition"
-      >izuhasd</button>
+      >Vissza</button>
     </div>
   );
 };

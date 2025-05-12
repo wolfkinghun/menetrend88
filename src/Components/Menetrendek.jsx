@@ -2,29 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { db, collection, getDocs, deleteDoc, doc, updateDoc } from "../firebase";
 import { useAuth } from "../hooks/useAuth";
 import emailjs from 'emailjs-com'; // EmailJS importálása
+import { useNavigate } from 'react-router-dom';
 
 const DisplayStreams = () => {
   const [streams, setStreams] = useState([]);
   const [editingStream, setEditingStream] = useState(null);
   const [editedData, setEditedData] = useState({ description: "", time: "", streamDate: "" });
   const { isAdmin, user } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchStreams = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "streams"));
-        const streamsData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setStreams(streamsData);
-      } catch (error) {
-        console.error("Error loading streams: ", error);
-      }
-    };
+useEffect(() => {
+  const fetchStreams = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "streams"));
+      const streamsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    fetchStreams();
-  }, []);
+      // Sort streams by streamDate (ascending order)
+      const sortedStreams = streamsData.sort((a, b) => {
+        const dateA = new Date(a.streamDate.seconds * 1000);
+        const dateB = new Date(b.streamDate.seconds * 1000);
+        return dateA - dateB; // ascending order
+      });
+
+      setStreams(sortedStreams);
+    } catch (error) {
+      console.error("Error loading streams: ", error);
+    }
+  };
+
+  fetchStreams();
+}, []);
+
 
   const formatDay = (date) => {
     if (date instanceof Date && !isNaN(date)) {
@@ -84,29 +95,32 @@ const DisplayStreams = () => {
     }
   };
 
-  const handleNotify = (stream) => {
-    if (user) {
-      // EmailJS integrálás
-      const templateParams = {
-        to_email: user.email, // A bejelentkezett felhasználó email címe
-        stream_time: stream.time,
-        stream_day: formatDay(new Date(stream.streamDate.seconds * 1000)),
-      };
+const handleNotify = (stream) => {
+  if (user?.email) {
+    const templateParams = {
+      to_email: user.email,
+      stream_time: stream.time,
+      stream_day: formatDay(new Date(stream.streamDate.seconds * 1000)),
+    };
 
-      emailjs.send(
-        'service_id', // A szolgáltatás ID-ja
-        'template_id', // Az email sablon ID-ja
-        templateParams,
-        'user_id' // Az EmailJS felhasználói ID-ja
-      )
-      .then((response) => {
-        alert(`Értesítést küldtünk a ${stream.time} streamről!`);
-      }, (err) => {
-        alert('Hiba történt az értesítés küldése közben.');
-        console.error('EmailJS hiba:', err);
-      });
-    }
-  };
+    emailjs.send(
+      'service_g5ceale',         // Szolgáltatás ID
+      'template_yzi6t7a',        // Sablon ID
+      templateParams,
+      'nWMXoFjWnQqfOItpd'        // Public kulcs (nem user_id!!!)
+    )
+    .then(() => {
+      alert(`Értesítést küldtünk a ${stream.time} streamről!`);
+    })
+    .catch((err) => {
+      alert('Hiba történt az értesítés küldése közben.');
+      console.error('EmailJS hiba:', err);
+    });
+  } else {
+    alert("Nem vagy bejelentkezve, vagy hiányzik az email címed.");
+  }
+};
+
 
   return (
     <div className="w-full max-w-6xl mx-auto px-5 py-5">
@@ -158,6 +172,16 @@ const DisplayStreams = () => {
             </div>
           );
         })}
+        {isAdmin && (
+          //itt
+  <div
+    onClick={() => navigate("/addStream")} // vagy modalt nyitsz
+    className="cursor-pointer border-2 border-dashed border-purple-500 text-purple-400 hover:bg-purple-900 hover:text-white p-6 rounded-lg flex items-center justify-center transition"
+  >
+    ➕ Új stream hozzáadása
+  </div>
+)}
+
       </div>
 
       {/* Szerkesztő modal (egyszerű verzió) */}
