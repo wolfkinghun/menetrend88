@@ -56,14 +56,14 @@ export const Home = () => {
 
       {/* Üdvözlő szöveg */}
       <div className="text-center mt-8">
-        <h1 className="text-4xl font-bold text-purple-50 mb-5 p-3">Szia, örülök, hogy itt vagy! 💜</h1>
+        <h1 className="text-4xl font-bold text-purple-50 mb-5 p-3">Szia, örülünk, hogy itt vagy! 💜</h1>
       </div>
 
       {/* Kép */}
       <div className="flex justify-center items-center w-full mb-8">
         <img
-          src="https://static-cdn.jtvnw.net/jtv_user_pictures/823dcb33-4a51-45d8-9388-491ce8de48f2-profile_image-70x70.jpeg"
-          alt="Centered"
+        src="main5.jpg"
+       alt="Centered"
           className="w-full max-w-[100px] rounded-2xl shadow-2xl border-4 border-purple-700"
         />
       </div>
@@ -72,19 +72,19 @@ export const Home = () => {
       <Menetrend />
 
       {/* Névjegy gomb */}
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <button
           onClick={() => navigate('/nevjegy')}
           className="bg-purple-700 text-white py-2 px-6 rounded-lg shadow-md hover:bg-purple-800 transition"
         >
           Névjegy
         </button>
-      </div>
+      </div> */}
 
       {/* Bemutatkozás blokk */}
       <div className="max-w-3xl text-center text-purple-200 mt-12 px-4">
         <p className="mt-4 font-medium text-pink-400">
-          💜 Next Level Racing • Trustmaster
+          💜 Hun Sim Racing Team • 2025
         </p>
       </div>
 
